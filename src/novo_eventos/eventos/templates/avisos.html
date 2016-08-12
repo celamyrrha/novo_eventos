@@ -1,0 +1,19 @@
+<!--   -*- coding: utf-8 -*- -->
+{% extends 'evento_painel.html' %}
+
+
+{% block dashboard_content %}
+{% for aviso in avisos %}
+<div class="well">
+    <h2>{{ aviso.titulo }}</h2>
+    <p>
+        {{ aviso.conteuto | linebreaks }}
+    </p>
+    <p>Postado em:  {{ aviso.criado }}</p>
+</div>
+{% empty %}
+<div class="well">
+    <h4>Nenhum aviso para este evento.</h4>
+</div>
+{% endfor %}
+{% endblock %}

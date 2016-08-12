@@ -1,0 +1,15 @@
+<!--   -*- coding: utf-8 -*- -->
+{% extends 'evento_painel.html' %}
+
+{% block dashboard_content %}
+
+<form action="" method="post">
+	{% csrf_token %}
+	<h4>Você deseja realmente cancelar a inscrição no evento: {{ evento }}?</h4>
+	<div class="col-sm-offset-2 col-sm-10">
+		<button type="submit" class="btn btn-danger">Confirmar</button>
+		<a href="{% url 'eventos:avisos' evento.slug %} " class="btn btn-default">Voltar</a>
+	</div>
+</form>
+
+{% endblock %}

@@ -1,0 +1,30 @@
+<!--   -*- coding: utf-8 -*- -->
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block content %}
+    <div class="row">
+{% for evento in eventos %}
+            <div class="media">
+                 <a class="media-left" href="{{ evento.get_absolute_url }}">
+                 {% if evento.imagem_evento %}
+                    <img src="{{ evento.imagem_evento.url}}" alt="{{ evento.nome_evento }}" width = >
+                    {% else %}
+                    <img src="{% static 'img/logo.png' %}" alt="{{ evento.nome_evento }}">
+                  {% endif %}
+                   </a>
+                    <div class="media-body">
+                    <a class="media-left" href="{{ evento.get_absolute_url }}">
+                        <h4 class="media-heading">{{ evento.nome_evento }}</h4>
+                    </a>    
+                        {{ evento.descricao|linebreaks }}
+                    </div>
+                    <hr>
+             </div>
+{% empty %}
+<h4>Nenhum evento cadastrado.</h4>
+{% endfor %}            
+
+        </div>	
+{% endblock %}

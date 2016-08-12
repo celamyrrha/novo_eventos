@@ -1,0 +1,5 @@
+{% for inscricao in inscricoes %}
+<li><a href="#">{{ inscricao.evento }}</a></li>
+{% empty %}
+<li>Nenhum curso encontrado.</li>
+{% endfor %}
