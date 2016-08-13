@@ -2,9 +2,7 @@
 from __future__ import unicode_literals
 
 from django.db import models
-from bsddb.test.test_all import verbose
 from django.conf import settings
-from django.template.defaultfilters import default
 
 # Create your models here.
 class EventoManager(models.Manager):
