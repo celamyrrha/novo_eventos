@@ -1,0 +1,27 @@
+<!--   -*- coding: utf-8 -*- -->
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block content %}
+        <h4>Imprimir Crachá</h4><hr>
+             
+                    <div id="divCracha">            
+                        <img id="fundocracha" src="{% static 'img/cracha .jpg' %}">
+                        <div id="divNome">Nome</div>     
+                        <div id="divNomeu">{{ user }}</div>                        
+                        <div id="divTipoParticipante">Participante</div>
+                        <div id="divNome2">Evento</div>   
+                        <div id="divInstituicao">{{ evento }}</div>
+                    </div>
+                    <br /><br />
+                    <div id="divImprimir">
+                    <form></form>
+                        <input type="button" class="btn btn-default name="btnImprimir" id="btnImprimir" value="Imprimir" onclick="window.print();" />
+                   <a href="{% url 'accounts:painel_usuario' %} " class="btn btn-default">Voltar</a>
+                   </form>
+                    </div>
+
+                  
+            </div>
+{% endblock %}

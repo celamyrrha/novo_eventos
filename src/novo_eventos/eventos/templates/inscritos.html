@@ -1,0 +1,60 @@
+<!--   -*- coding: utf-8 -*- -->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+{% load staticfiles %}
+<html>
+   <head>
+        <title>Inscritos - {{ evento }}</title>
+        <style type="text/css">
+            @page {
+                size: {{ pagesize }};
+                margin: 1cm;
+                @frame footer {
+                    -pdf-frame-content: footerContent;
+                    bottom: 0cm;
+                    margin-left: 9cm;
+                    margin-right: 9cm;
+                    height: 1cm;
+                }
+            }
+    table.tdefault {
+	border: 2px solid grey;
+    }
+
+        </style>
+    </head>
+    <body>
+    <div class="row">
+   <h1>Inscritos</h1>
+
+    <h4>Evento: {{ evento }}</h4> 
+     <p>Duração: {{ evento.data_inicio }} a {{ evento.data_fim }}</p><br/>
+<div class="table-responsive">
+  <table class="tdefault" cellpadding="4">
+  <tr>
+  <td align="center">Nome</td>
+  <td align="center">Cidade/RJ</td>
+  <td align="center">Sexo</td>
+  </tr>
+     {% for inscricao in inscricoes %}
+                 <tr>
+                 <td>{{ inscricao.user }} </td>
+                 <td>{{ inscricao.user.cidade }} {{ inscricao.user.estado }}</td>
+                 <td>{{ inscricao.user.get_sexo_display }}</td>
+</tr>
+{% empty %}
+<h4>Nenhum participante inscrito.</h4>
+{% endfor %}   
+<tr>
+<td>Total de Inscritos:</td>
+<td>{{ inscricoes.count  }} </td>       
+</tr>  
+</table>
+</div>
+</div>
+<div id="footerContent">
+            {%block page_foot%}
+                Page <pdf:pagenumber>
+            {%endblock%}
+        </div>
+ </body>
+</html>

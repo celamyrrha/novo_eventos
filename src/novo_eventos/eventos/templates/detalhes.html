@@ -1,61 +1,100 @@
 {% extends 'base.html' %} {% load static %} {% block content %}
 <div class="container">
-<div class="jumbotron">
-	<h1>{{ evento.nome_evento }}</h1>
-	<a class="btn btn-success btn-lg" href="{% url 'eventos:inscricoes' evento.slug %}" role="button">Inscreva-se</a>
-</div>
-<div class="row">
-	<div role="complementary" class="col-md-8">
-		<p>Data de In&iacute;cio {{ evento.data_inicio }}</p>
-		<p>Data de T&eacute;rmino {{ evento.data_fim }}</p>
-		<p>N&uacute;mero de vagas {{ evento.vagas_evento }}</p>
-		<p>Nome do Palestrante {{ evento.nome_palestrante }}</p>
-		<p>Organizador {{ users.username }}</p>
-		<p>Tipo de Evento:{{ evento.tipo_evento }}</p>
-		<p>{{ evento.descricao }}</p>
-</div>
-	<div role="main" class="col-md-4">
+	<div class="jumbotron">
+		{% if user.is_staff %}
+		<div class="btn-group" role="group">
+			<button type="button" class="btn btn-default dropdown-toggle"
+				data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+				Evento <span class="caret"></span>
+			</button>
+			<ul class="dropdown-menu">
+				<li><a href="{% url 'eventos:edita_evento' evento.slug %}">Editar
+						Evento</a></li>
+				<li><a href="{% url 'eventos:exclui_evento' evento.slug %}">Excluir
+						Evento</a></li>
+			</ul>
+			<div class="btn-group" role="group" aria-label="...">
+				<a class="btn btn-default"
+					href="{% url 'eventos:email_participantes' evento.slug %}"
+					role="button">Enviar email para participantes</a> <a
+					class="btn btn-default"
+					href="{% url 'eventos:lista_presenca' evento.slug %}" role="button">
+					Lista de Presença</a> <a class="btn btn-default"
+					href="{% url 'eventos:certificado_palestrante' evento.slug %}"
+					role="button">Certificado do Palestrante</a> <a
+					class="btn btn-default"
+					href="{% url 'eventos:relatorio_inscritos' evento.slug %}"
+					role="button">Relatório</a>
+
+				<div class="btn-group" role="group">
+					<button type="button" class="btn btn-default dropdown-toggle"
+						data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						Gráficos <span class="caret"></span>
+					</button>
+					<ul class="dropdown-menu">
+						<li><a href="{% url 'eventos:grafico_sexo' evento.slug %}">Gráfico
+								Sexo</a></li>
+						<li><a href="{% url 'eventos:grafico_cidade' evento.slug %}">Gráfico
+								Cidade</a></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		{% endif %}
+		<h1>{{ evento.nome_evento }}</h1>
+		<a class="btn btn-success btn-lg"
+			href="{% url 'eventos:inscricoes' evento.slug %}" role="button">Inscreva-se</a>
+	</div>
+	<div class="row">
+		<div role="complementary" class="col-md-8">
+			<p>Data de In&iacute;cio: {{ evento.data_inicio }}</p>
+			<p>Data de T&eacute;rmino: {{ evento.data_fim }}</p>
+			<p>N&uacute;mero de vagas: {{ evento.vagas_evento }}</p>
+			<p>Nome do Palestrante: {{ evento.nome_palestrante }}</p>
+			<p>Tipo de Evento:{{ evento.get_tipo_evento_display }}</p>
+			<p>{{ evento.descricao }}</p>
+			<p>Local do Evento: {{ evento.local }} - {{ evento.cidade }}/ {{ evento.estado }}</p>
+		</div>
+		<div role="main" class="col-md-4">
 			<div class="span9">
 				<p>
 					{% if evento.imagem_evento %} <img alt="{{ evento.nome_evento }}"
-						src="{{ evento.imagem_evento.url }}"> {% else %} <img
+						src="{{ evento.imagem_evento.thumbnail.url }}"> {% else %} <img
 						alt="{{ evento.nome_evento }}" src="{% static 'img/logo.png' %}">
 					{% endif %}
 				</p>
 			</div>
 		</div>
 
-</div>
-<h4>Dúvidas?</h4>
-<button type="button" class="btn btn-default">Fale conosco</button>
-<div id="contato">
-	<h3>Tire suas dúvidas sobre o evento</h3>
-	{% if is_valid %}
-	<p>Você enviou o formulário com sucesso.</p>
-	{% endif %}
-	<form method="post" action="#contato" class="form-horizontal">
-		{% csrf_token %} {% for field in form %}
-		<div class="form-group">
-			<label class="col-sm-2 control-label"> {{ field.label_tag }}</label>
-			<div class="col-sm-10">{{ field }}</div>
-			{% if field.errors %} {% for error in field.errors%}
-			<div class="col-sm-10">
-				<p class="bg-danger">{{ error }}</p>
+	</div>
+	<div id="contato">
+		<h3>Tire suas dúvidas sobre o evento</h3>
+		{% if is_valid %}
+		<p>Você enviou o formulário com sucesso.</p>
+		{% endif %}
+		<form method="post" action="#contato" class="form-horizontal">
+			{% csrf_token %} {% for field in form %}
+			<div class="form-group">
+				<label class="col-sm-2 control-label"> {{ field.label_tag }}</label>
+				<div class="col-sm-10">{{ field }}</div>
+				{% if field.errors %} {% for error in field.errors%}
+				<div class="col-sm-10">
+					<p class="bg-danger">{{ error }}</p>
+				</div>
+				{% endfor %} {% endif %}
+
 			</div>
-			{% endfor %} {% endif %}
-
-		</div>
-		{% endfor %}
+			{% endfor %}
 
 
-		<div class="col-sm-offset-2 col-sm-10">
-			<button type="submit" class="btn btn-default">Enviar</button>
-		</div>
+			<div class="col-sm-offset-2 col-sm-10">
+				<button type="submit" class="btn btn-default">Enviar</button>
+			</div>
 
-	</form>
-</div>
+		</form>
+	</div>
 
 
 
 
-{% endblock content %}
+	{% endblock content %}

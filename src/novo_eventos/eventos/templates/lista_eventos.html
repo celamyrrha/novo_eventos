@@ -9,7 +9,7 @@
             <div class="media">
                  <a class="media-left" href="{{ evento.get_absolute_url }}">
                  {% if evento.imagem_evento %}
-                    <img src="{{ evento.imagem_evento.url}}" alt="{{ evento.nome_evento }}" width = >
+                    <img src="{{ evento.imagem_evento.thumbnail.url}}" alt="{{ evento.nome_evento }}" width = >
                     {% else %}
                     <img src="{% static 'img/logo.png' %}" alt="{{ evento.nome_evento }}">
                   {% endif %}

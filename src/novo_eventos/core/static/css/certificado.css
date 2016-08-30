@@ -1,0 +1,51 @@
+#fundo{
+	width:29cm;
+	height:21cm;
+	position: absolute;
+	z-index:-1;
+}
+
+#divCertificado{
+    width: 29cm;
+    height: 21cm;
+    padding: 0.25cm;
+    margin: 0px;
+    font-family: 'Roboto', sans-serif;
+    word-wrap: break-word; 
+
+}
+
+
+#divCertificado #divNome{    
+    width: 87%;
+    height: 65%;
+    text-shadow: 2px;
+    word-wrap: break-word; 
+    font-family: 'Roboto', sans-serif;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    padding-top: 38%;  
+    padding-left: 15%; 
+    font-size: 20px;
+    text-align: center;
+    vertical-align:middle;
+    font-weight: bold;
+}
+
+
+#divCertificado #divInstituicao{
+    text-align: center;  
+    width: auto; 
+    height:5%;   
+    margin-top: 0%;  
+    padding-top: 1%;     
+    font-family: 'Roboto', sans-serif;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+#logo{
+	width:30%;
+	 padding-top: 5%;  
+
+}

@@ -1,0 +1,40 @@
+<html>
+<head>
+<script type="text/javascript"
+	src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript">
+      google.charts.load('current', {'packages':['bar']});
+      google.charts.setOnLoadCallback(drawStuff);
+
+      function drawStuff() {
+        var data = new google.visualization.arrayToDataTable([
+['Cidade', 'nº de Inscritos'],
+{% for inscricao in inscricoes %}
+['{{ inscricao.user.cidade | safe }}',
+{{ cidades.count }}],
+{% endfor %} 
+]);
+
+        var options = {
+          title: 'Inscritos por Cidade - {{evento}}',
+          width: 900,
+          legend: { position: 'none' },
+          chart: { subtitle: '' },
+          axes: {
+            x: {
+              0: { side: 'top', label: 'Cidade do inscrito'} // Top x-axis.
+            }
+          },
+          bar: { groupWidth: "90%" }
+        };
+
+        var chart = new google.charts.Bar(document.getElementById('top_x_div'));
+        // Convert the Classic options to Material options.
+        chart.draw(data, google.charts.Bar.convertOptions(options));
+      };
+    </script>
+</head>
+<body>
+	<div id="top_x_div" style="width: 900px; height: 500px;"></div>
+</body>
+</html>

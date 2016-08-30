@@ -12,9 +12,21 @@
 <span class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span> 
 {{ evento }} 
 </a></li>
-<li><a href="#">
+<li><a href="{% url 'eventos:palestras' evento.slug %}">
 <span class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span> 
 Aulas e Materiais
+</a></li> 
+<li><a href="{% url 'eventos:avisos' evento.slug %}">
+<span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span> 
+Avisos
+</a></li>
+<li><a href="{% url 'eventos:cracha' evento.slug %}">
+<span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span> 
+Imprimir Crachá
+</a></li> 
+<li><a href="{% url 'eventos:certificado' evento.slug %}">
+<span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span> 
+Imprimir Certificado
 </a></li> 
 {{ block.super }}
 {% endblock %}

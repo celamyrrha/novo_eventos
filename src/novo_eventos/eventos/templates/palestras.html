@@ -1,0 +1,24 @@
+<!--   -*- coding: utf-8 -*- -->
+{% extends 'evento_painel.html' %}
+
+{% block breadcrumb %} 
+{{ block.super }}
+
+<li><a href="{% url 'eventos:palestras' evento.slug %}">Palestras</a></li>
+{% endblock %}
+
+{% block dashboard_content %}
+{% for palestra in palestras %}
+<div class="well">
+    <h2>{{ palestra }}</h2>
+    <p>
+        {{ palestra.descricao | truncatewords:'20' }}
+    </p>
+    <a class="btn btn-primary" href="{% url 'eventos:palestra' evento.slug palestra.pk %}" role="button">Acessar</a>
+</div>
+{% empty %}
+<div class="well">
+    <h4>Nenhum material disponível.</h4>
+</div>
+{% endfor %}
+{% endblock %}

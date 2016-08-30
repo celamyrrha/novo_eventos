@@ -1,0 +1,100 @@
+#fundocracha{
+	width:9cm;
+	height:11cm;
+	position: absolute;
+	z-index:-1;
+}
+
+#divCracha{ 		
+    width: 9cm;
+    height: 11cm;
+    padding: 0.25cm;
+    margin: 0px;
+    font-family: 'Roboto', sans-serif;
+    word-wrap: break-word; 
+
+}
+
+
+#divCracha #divNome{    
+    width: 90%;
+    height: 30%;
+    text-shadow: 2px;
+    word-wrap: break-word; 
+    font-family: 'Roboto', sans-serif;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    padding-top: 30%; 
+    padding-left: 12%; 
+    font-size: 14px;
+    text-align: center;
+    vertical-align:middle;
+    font-weight: bold;
+    font-color:white;
+}
+
+#divCracha #divNomeu{    
+    width: 90%;
+    height: 10%;
+    margin-left: 8%;
+    margin-top:5%;
+    word-wrap: break-word; 
+    font-family: 'Roboto', sans-serif;
+    overflow:hidden;
+    font-weight: bold;
+    text-overflow:ellipsis;
+    padding-top: 1%;  
+    font-size: 16px;
+    text-align: center;
+    vertical-align:middle;
+    background-color: white;
+    border-radius: 10px;
+}
+
+#divCracha #divTipoParticipante{
+    text-align: center;  
+    vertical-align:middle;  
+    width: 90%; 
+    height:10%;   
+    margin-top: 10%;  
+    margin-left: 8%;    
+    font-family: 'Roboto', sans-serif;
+    font-size: 18px;
+    font-weight: bold;
+    background-color: white;
+    border-radius: 10px;
+    padding-top: 1%; 
+    
+}
+
+#divCracha #divNome2{    
+    width: auto;
+    height: 10%;
+    text-shadow: 2px;
+    word-wrap: break-word; 
+    font-family: 'Roboto', sans-serif;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    padding-top: 1%;  
+    font-size: 14px;
+    text-align: center;
+    vertical-align:middle;
+    font-weight: bold;
+    font-color:white;
+    margin-top: 10%;
+}
+
+#divCracha #divInstituicao{
+    text-align: center;  
+    width: 90%; 
+    height:10%;   
+    margin-top: 0%;  
+    margin-left: 8%;
+    padding-top: 1%;     
+    font-family: 'Roboto', sans-serif;
+    font-size: 18px;
+    font-weight: bold;
+    background-color: white;
+    border-radius: 10px;
+}
+
