@@ -67,8 +67,7 @@ signals.post_save.connect(create_slug, sender=Evento)
 class Palestra(models.Model):
     nome = models.CharField('Nome', max_length = 100)
     descricao = models.TextField('Descrição', blank = True)
-    numero = models.IntegerField('Número (ordem)', blank = True, default=0)
-    release_date = models.DateField('Data de liberação', blank = True, null = True)
+    release_date = models.DateField('Data de liberação', null = True, blank = True)
     
     evento = models.ForeignKey(Evento, verbose_name='Evento', related_name='palestras')
     
@@ -87,10 +86,10 @@ class Palestra(models.Model):
     class Meta:
         verbose_name = 'Palestra'
         verbose_name_plural = 'Palestras'
-        ordering = ['numero']
+        ordering = ['release_date']
         
 class Material(models.Model):
-    nome = models.CharField('Nome', max_length = 100)
+    nome = models.CharField('Identificação do Material', max_length = 100)
     embedded = models.TextField('Vídeo embedded', blank = True)
     arquivo = models.FileField(upload_to='palestras/materiais', blank = True, null = True) 
     
@@ -133,12 +132,13 @@ class Inscricao(models.Model):
 class Aviso(models.Model):
     evento = models.ForeignKey(Evento, verbose_name = 'Evento', related_name='avisos')
     titulo = models.CharField('Título', max_length=100)
-    conteuto = models.TextField('Conteúdo')
+    conteudo = models.TextField('Conteúdo')
     criado = models.DateTimeField('Criado em', auto_now_add=True)
     atualizado = models.DateTimeField('Atualizado em', auto_now=True)
     
     def __str__(self):
         return self.titulo
+
     
     class Meta:
         verbose_name = 'Aviso'

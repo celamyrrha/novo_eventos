@@ -7,7 +7,7 @@
         <h4>Imprimir Certificado</h4><hr>
              
                           <div id="divCertificado">      
-                        <img id="fundo" alt="logo" src="{% static 'img/certificado.jpg' %}">
+                        <img id="fundo" alt="logo" src="{% static '/static/img/certificado.jpg' %}">
                         
                         <div id="divNome">Certificamos que {{ evento.nome_palestrante | upper }} participou do {{ evento }}, 
                         realizado de {{ evento.data_inicio }} a {{ evento.data_fim }}, na qualidade de Palestrante.</div>                         
@@ -16,7 +16,7 @@
                  </div>
                     <br /><br />
                     <div id="divImprimir">
-                    <form></form>
+                    <form>
                         <input type="button" class="btn btn-default name="btnImprimir" id="btnImprimir" value="Imprimir" onclick="window.print();" />
                    <a href="{% url 'accounts:painel_usuario' %} " class="btn btn-default">Voltar</a>
                    </form>

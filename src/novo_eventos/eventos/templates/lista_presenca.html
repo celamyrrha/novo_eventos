@@ -15,9 +15,7 @@
   <table class="table">
      {% for inscricao in inscricoes %}
                  <tr>
-                 <td>{{ inscricao.user }} </td>
-                 <td><input type="checkbox" name="presenca" value="presente"/> Presente</td>
-                 <td>{{ inscricao.status }}</td>
+                 <td>{{ inscricao.user }} :________________________________________________________________</td>
 </tr>
 {% empty %}
 <h4>Nenhum participante inscrito.</h4>
@@ -26,7 +24,7 @@
 </div>
 </div>
 <div class="col-sm-offset-2 col-sm-10">
-		<button type="submit" class="btn btn-danger">Confirmar</button>
+		<a href="{% url 'eventos:imprimir_lista' evento.slug %} " class="btn btn-default" target="_blank">Gerar PDF</a>
 		<a href="{% url 'eventos:detalhes' evento.slug %} " class="btn btn-default">Voltar</a>
 	</div>
 </form>

@@ -1,12 +1,9 @@
 # -*- coding: utf-8 -*-
 from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth.forms import UserCreationForm, PasswordChangeForm, SetPasswordForm
+from django.contrib.auth.forms import PasswordChangeForm, SetPasswordForm
 from django.contrib.auth import authenticate, login, get_user_model
 from django.contrib.auth.decorators import login_required
-from django.conf import settings
-from novo_eventos.core.utils import generate_hash_key
-from novo_eventos.eventos.models import Inscricao
-from .forms import RegistroForm, EditaAccountForm, PasswordResetForm
+from .forms import RegistroForm, EditaAccountForm, PasswordResetForm, OrganizadorForm
 from .models import PasswordReset
 from django.contrib import messages
 
@@ -26,6 +23,22 @@ def registro(request):
             return redirect('core:home')
     else:
         form = RegistroForm()        
+    context = {'form': form}
+    return render(request, template_name, context)
+
+def registro_organizador(request):
+    template_name = 'registro_organizador.html'
+    if request.method == 'POST':
+        form = OrganizadorForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            user = authenticate(
+                    username=user.username, password=form.cleaned_data['password1']
+                )
+            login(request, user)
+            return redirect('core:home')
+    else:
+        form = OrganizadorForm()        
     context = {'form': form}
     return render(request, template_name, context)
 

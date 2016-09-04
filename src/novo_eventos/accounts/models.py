@@ -29,7 +29,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     estado = models.CharField('Estado', choices = STATE_CHOICES, blank = True, max_length=2)
     sexo = models.CharField('Sexo', choices = SEXO_CHOICES, blank = True, max_length = 1)
     is_active = models.BooleanField('Está ativo?', blank=True, default=True)
-    is_staff = models.BooleanField('É da equipe?', blank=True, default=False)
+    is_staff = models.BooleanField('É Organizador?', blank=True, default=False)
     date_joined = models.DateTimeField('Data de Entrada', auto_now_add=True)
 
     objects = UserManager()

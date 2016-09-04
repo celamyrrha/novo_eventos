@@ -4,12 +4,13 @@
 {{ block.super }}
 
 <li><a href="{% url 'eventos:palestras' evento.slug %}">Palestras</a></li>
-<li><a href="{% url 'eventos:palestra' evento.slug palestra.pk %}">{{ palestra }}</a></li>
+<li><a href="{% url 'eventos:palestra' evento.slug palestra.pk %}">{{ palestra.nome }}</a></li>
 {% endblock %}
 
 {% block dashboard_content %}
 <div class="well">
-    <h2><a href="{% url 'eventos:palestra' evento.slug palestra.pk %}">{{ palestra }}</a></h2>
+    <h2><a href="{% url 'eventos:palestra' evento.slug palestra.pk %}">{{ palestra.nome }}</a>
+    </a></h2>
     {{ palestra.descricao|linebreaks }}
     <p>
         <h4>Material da Aula</h4>
@@ -28,7 +29,7 @@
                 {% for material in palestra.materiais.all %}
                 <tr class="">
                     <td>
-                        {{ material }}
+                        {{ material.nome }}
                     </td>
                     <td>
                         {% if material.is_embedded %}
@@ -36,7 +37,7 @@
                             Acessar
                         </a>
                         {% else %}
-                        <a target="_blank" href="">
+                        <a href="{{ material.arquivo.url }}" target="_blank">
                             Baixar
                         </a>
                         {% endif %}

@@ -69,13 +69,22 @@
 								Editar Senha
 						</a></li>
 					</ul></li>
+					{% if user.is_staff %}
+					<li><a href="#" id="btn-3" data-toggle="collapse"
+					data-target="#submenu3" aria-expanded="false">Organizadores</a>
+					<ul class="nav collapse" id="submenu3" role="menu"
+						aria-labelledby="btn-3">
+						<li><a href="{% url 'accounts:registro_organizador' %}"> <span
+								class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+								Inserir Organizador
+						</a></li>
+					</ul></li>
+					{% endif %}
 			</ul>
 			{% endblock %}
 		</aside>
 	</div>
 </div>
-
-<!--  detalhes do produto -->
 
 
 {% endblock content %}

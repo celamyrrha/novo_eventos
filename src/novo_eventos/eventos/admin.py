@@ -14,7 +14,7 @@ class MaterialInlineAdmin(admin.StackedInline):
     model = Material
 
 class PalestraAdmin(admin.ModelAdmin):
-    list_display = ['nome', 'numero', 'evento', 'release_date']
+    list_display = ['nome', 'evento', 'release_date']
     search_fields = ['nome', 'descricao']
     list_filter = ['criado']
     inlines = [MaterialInlineAdmin]

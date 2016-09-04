@@ -67,34 +67,47 @@
 		</div>
 
 	</div>
-	<div id="contato">
-		<h3>Tire suas dúvidas sobre o evento</h3>
+<div class="row">
+        <div class="col-md-12">
+            <div class="well well-sm">
+                <form class="form-horizontal" method="post">
+                    <legend class="text-center header">Tire suas dúvidas sobre o evento</legend>
 		{% if is_valid %}
-		<p>Você enviou o formulário com sucesso.</p>
+		<div class="alert alert-success" role="alert">
+			<p>Você enviou o formulário com sucesso.</p>
+			</div>
 		{% endif %}
-		<form method="post" action="#contato" class="form-horizontal">
-			{% csrf_token %} {% for field in form %}
-			<div class="form-group">
-				<label class="col-sm-2 control-label"> {{ field.label_tag }}</label>
-				<div class="col-sm-10">{{ field }}</div>
-				{% if field.errors %} {% for error in field.errors%}
-				<div class="col-sm-10">
-					<p class="bg-danger">{{ error }}</p>
-				</div>
-				{% endfor %} {% endif %}
+		{% csrf_token %} {% for field in form %}
+                        <div class="form-group">
+                       	 <label class="col-md-2 col-md-offset-2 text-right"> {{ field.label_tag }}</label>
+                           <div class="col-md-6">
+                                <p class="">{{ field }}</p>
+                            </div>
+                            {% if field.errors %} {% for error in field.errors%}
+                            <div class="col-md-8">
+								<p class="bg-danger">{{ error }}</p>
+							</div>
+						{% endfor %} {% endif %}
+						</div>
+						{% endfor %}
 
-			</div>
-			{% endfor %}
+                        <div class="form-group">
+                            <div class="col-md-12 text-center">
+                                <button type="submit" class="btn btn-primary">Enviar</button>
+                            </div>
+                        </div>
+                </form>
+            </div>
+        </div>
+    </div>
 
 
-			<div class="col-sm-offset-2 col-sm-10">
-				<button type="submit" class="btn btn-default">Enviar</button>
-			</div>
-
-		</form>
-	</div>
-
-
-
+<style>
+    .header {
+        color: #36A0FF;
+        font-size: 24px;
+        padding: 10px;
+    }
+</style>
 
 	{% endblock content %}

@@ -4,13 +4,13 @@
 {% block breadcrumb %}
     {{ block.super }}
     <li><a href="{% url 'eventos:palestras' evento.slug %}">Palestras</a></li>
-    <li><a href="{% url 'eventos:palestra' evento.slug palestra.pk %}">{{ palestra }}</a></li>
-    <li><a href="{% url 'eventos:material' evento.slug material.pk %}">{{ material }}</a></li>
+    <li><a href="{% url 'eventos:palestra' evento.slug palestra.pk %}">{{ palestra.nome }}</a></li>
+    <li><a href="{% url 'eventos:material' evento.slug material.pk %}">{{ material.nome }}</a></li>
 {% endblock %}
 
 {% block dashboard_content %}
 <div class="well">
-    <h2><a href="{% url 'eventos:material' evento.slug material.pk %}">{{ material }}</a></h2>
+    <h2><a href="{% url 'eventos:material' evento.slug material.pk %}">{{ material.nome }}</a></h2>
     {{ material.embedded|safe }}
     <p>
         <a href="{% url 'eventos:palestra' evento.slug palestra.pk %}">Voltar</a>

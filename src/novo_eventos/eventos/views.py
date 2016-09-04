@@ -1,14 +1,8 @@
 # -*- coding: utf-8 -*-
-import os
-from io import BytesIO
-from reportlab.pdfgen import canvas
-from reportlab.lib.pagesizes import A4, cm
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from django.shortcuts import render_to_response
-from django.template import RequestContext
 import cStringIO as StringIO
 from xhtml2pdf import pisa
 from django.template.loader import get_template
@@ -16,11 +10,10 @@ from django.template import Context
 from cgi import escape
 
 
-from .forms import ContatoEvento, EventoForm, ContatoParticipantes
-from .models import Evento, Inscricao, Palestra, Material
+from .forms import ContatoEvento, EventoForm, ContatoParticipantes, AvisoForm,PalestraForm, MaterialFormSet
+from .models import Evento, Inscricao, Palestra, Material, Aviso
 from novo_eventos.accounts.models import User
 from .decorators import inscricao_required
-from django.template.context_processors import request
 from django.db.models.aggregates import Count
 
 # Create your views here.
@@ -41,11 +34,6 @@ def lista_presenca(request, slug):
         return redirect('eventos:index')
     evento = get_object_or_404(Evento, slug=slug)
     inscricoes =  Inscricao.objects.filter(evento=evento)
-   # if request.method == 'POST':
-    #    Inscricao.vagas_evento = evento.vagas_evento + 1
-     #   Inscricao.save()
-      #  messages.success(request, 'Sua inscrição foi cancelada com sucesso!')
-       # return redirect('accounts:painel_usuario')
     template_name = 'lista_presenca.html'
     context = {
         'evento': evento,
@@ -59,10 +47,20 @@ def render_to_pdf(template_src, context_dict):
     html  = template.render(context)
     result = StringIO.StringIO()
 
-    pdf = pisa.pisaDocument(StringIO.StringIO(html.encode("ISO-8859-1")), result)
+    pdf = pisa.pisaDocument(StringIO.StringIO(html.encode("UTF-8")), 
+        dest=result,
+        encoding='UTF-8',
+        link_callback=fetch_resources)
     if not pdf.err:
         return HttpResponse(result.getvalue(), content_type='application/pdf')
     return HttpResponse('We had some errors<pre>%s</pre>' % escape(html))
+def fetch_resources(uri, rel):
+    import os.path
+    from django.conf import settings
+    path = os.path.join(
+            settings.STATIC_ROOT,
+            uri.replace(settings.STATIC_URL, ""))
+    return path
 
 @login_required
 def relatorio_inscritos(request, slug):
@@ -122,7 +120,25 @@ def certificado_palestrante(request, slug):
     inscricoes =  Inscricao.objects.filter(evento=evento)
     template = 'certificado_palestrante.html'
     context = {'evento':evento,'inscricoes': inscricoes}
-    return render(request, template, context)         
+    return render(request, template, context)   
+
+@login_required
+def imprimir_lista(request, slug):
+    if not request.user.is_staff:
+        messages.error(request, 'Acesso restrito aos organizadores')
+        return redirect('eventos:index')
+    evento = get_object_or_404(Evento, slug=slug)
+    inscricoes =  Inscricao.objects.filter(evento=evento)
+    #Retrieve data or whatever you need
+    return render_to_pdf(
+            'print_lista.html',
+            {
+                'pagesize':'A4',
+                'evento': evento,
+                'inscricoes': inscricoes 
+            }
+        )
+      
 
 
 @login_required
@@ -236,6 +252,57 @@ def cancelar_inscricao(request,slug):
     return render(request, template, context)
 
 @login_required
+def add_aviso(request, slug):
+    if not request.user.is_staff:
+        messages.error(request, 'Acesso restrito aos organizadores')
+        return redirect('eventos:index')
+    evento = get_object_or_404(Evento, slug=slug)
+    if request.method == "POST":
+        form = AvisoForm(request.POST)
+        if form.is_valid():
+            aviso = form.save(commit=False)
+            aviso.evento = evento
+            aviso.save()
+            return redirect('eventos:avisos', slug=evento.slug)
+    else:
+        form = AvisoForm()
+    template_name = 'edit_aviso.html'
+    context = {'form': form, 'evento': evento}
+    return render(request, template_name, context)
+
+@login_required
+def edita_aviso(request, slug, pk):
+    if not request.user.is_staff:
+        messages.error(request, 'Acesso restrito aos organizadores')
+        return redirect('eventos:index')
+    evento = get_object_or_404(Evento, slug=slug)
+    aviso = get_object_or_404(Aviso, pk=pk, evento=evento)
+    if request.method == "POST":
+        form = AvisoForm(request.POST, instance=aviso)
+        if form.is_valid():
+            form = form.save(commit=False)
+            form.aviso = aviso
+            form.save()
+            return redirect('eventos:avisos', slug=slug)
+    else:
+        form = AvisoForm(instance=aviso)
+    template_name = 'edit_aviso.html'
+    context = {'form': form, 'evento': evento}
+    return render(request, template_name, context)
+
+@login_required
+def exclui_aviso(request, slug, pk):
+    if not request.user.is_staff:
+        messages.error(request, 'Acesso restrito aos organizadores')
+        return redirect('eventos:index')
+    evento = get_object_or_404(Evento, slug=slug)
+    aviso = get_object_or_404(Aviso, pk=pk, evento=evento)
+    aviso.delete()
+    messages.success(request, 'Aviso excluído com sucesso.')
+    return redirect('eventos:avisos', slug=slug)
+    
+
+@login_required
 @inscricao_required
 def avisos(request, slug):
     evento = request.evento
@@ -265,6 +332,65 @@ def palestra(request, slug, pk):
     template = 'palestra.html'
     context = {'evento':evento, 'palestra':palestra}
     return render(request, template, context)
+
+@login_required
+def add_palestra(request, slug):
+    if not request.user.is_staff:
+        messages.error(request, 'Acesso restrito aos organizadores')
+        return redirect('eventos:index')
+    evento = get_object_or_404(Evento, slug=slug)
+    if request.method == "POST":
+        form = PalestraForm(request.POST)
+        if form.is_valid():
+            palestra = form.save(commit=False)
+            material_formset = MaterialFormSet(request.POST, request.FILES, instance = palestra)
+            palestra.evento = evento
+            if material_formset.is_valid():
+                palestra.save()
+                material_formset.save()
+                return redirect('eventos:palestras', slug=evento.slug)
+    else:
+        form = PalestraForm()
+        material_formset = MaterialFormSet(instance = Palestra())
+    template_name = 'edit_palestra.html'
+    context = {'form': form, 'evento': evento, 'material_formset': material_formset}
+    return render(request, template_name, context)
+
+@login_required
+def edita_palestra(request, slug, pk):
+    if not request.user.is_staff:
+        messages.error(request, 'Acesso restrito aos organizadores')
+        return redirect('eventos:index')
+    evento = get_object_or_404(Evento, slug=slug)
+    palestra = get_object_or_404(Palestra, pk=pk, evento=evento)
+    if request.method == "POST":
+        form = PalestraForm(request.POST, instance=palestra)
+        if form.is_valid():
+            form = form.save(commit=False)
+            material_formset = MaterialFormSet(request.POST, request.FILES, instance=palestra)
+            form.evento = evento
+            form.palestra = palestra
+            if material_formset.is_valid():
+                palestra.save()
+                material_formset.save()
+                return redirect('eventos:palestras', slug=evento.slug)
+    else:
+        form = PalestraForm(instance=palestra)
+        material_formset = MaterialFormSet(instance = palestra)
+    template_name = 'edit_palestra.html'
+    context = {'form': form, 'evento': evento, 'material_formset': material_formset }
+    return render(request, template_name, context)
+
+@login_required
+def exclui_palestra(request, slug, pk):
+    if not request.user.is_staff:
+        messages.error(request, 'Acesso restrito aos organizadores')
+        return redirect('eventos:index')
+    evento = get_object_or_404(Evento, slug=slug)
+    palestra = get_object_or_404(Palestra, pk=pk, evento=evento)
+    palestra.delete()
+    messages.success(request, 'Palestra excluída com sucesso.')
+    return redirect('eventos:palestras', slug=slug)
     
 @login_required
 @inscricao_required

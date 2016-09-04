@@ -1,0 +1,50 @@
+<!--   -*- coding: utf-8 -*- -->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+{% load staticfiles %}
+<html>
+   <head>
+        <title>Imprimir Certificado</title>
+        <style type="text/css">
+            @page {
+                size: {{ pagesize }};
+                margin: 1cm;
+                @frame footer {
+                    -pdf-frame-content: footerContent;
+                    bottom: 0cm;
+                    margin-left: 9cm;
+                    margin-right: 9cm;
+                    height: 1cm;
+                }
+            }
+    table.tdefault {
+	border: 2px solid grey;
+    }
+
+        </style>
+    </head>
+    <body>
+    <div class="row">
+    <p><h2>Lista de Presença</h2></p>
+
+    <h4>Evento: {{ evento }}</h4> 
+     <p>Duração: {{ evento.data_inicio }} a {{ evento.data_fim }}</p><br/>
+<div class="table-responsive">
+  <table class="table">
+     {% for inscricao in inscricoes %}
+                 <tr>
+                 <td>{{ inscricao.user }} :________________________________________________________________</td>
+</tr>
+{% empty %}
+<h4>Nenhum participante inscrito.</h4>
+{% endfor %}            
+</table>
+</div>
+</div>
+
+<div id="footerContent">
+            {%block page_foot%}
+                Page <pdf:pagenumber>
+            {%endblock%}
+        </div>
+ </body>
+</html>
