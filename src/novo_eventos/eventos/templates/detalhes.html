@@ -24,7 +24,7 @@
 					role="button">Certificado do Palestrante</a> <a
 					class="btn btn-default"
 					href="{% url 'eventos:relatorio_inscritos' evento.slug %}"
-					role="button">Relatório</a>
+					role="button" target="_blank">Relatório</a>
 
 				<div class="btn-group" role="group">
 					<button type="button" class="btn btn-default dropdown-toggle"
@@ -32,9 +32,9 @@
 						Gráficos <span class="caret"></span>
 					</button>
 					<ul class="dropdown-menu">
-						<li><a href="{% url 'eventos:grafico_sexo' evento.slug %}">Gráfico
+						<li><a href="{% url 'eventos:grafico_sexo' evento.slug %}" target="_blank">Gráfico
 								Sexo</a></li>
-						<li><a href="{% url 'eventos:grafico_cidade' evento.slug %}">Gráfico
+						<li><a href="{% url 'eventos:grafico_cidade' evento.slug %}" target="_blank">Gráfico
 								Cidade</a></li>
 					</ul>
 				</div>
