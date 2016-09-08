@@ -18,7 +18,7 @@ from stdimage.models import StdImageField
 class EventoManager(models.Manager):
     def search(self, query):
         return self.get_queryset().filter(
-            models.Q(nome__icontains=query) | \
+            models.Q(nome_evento__icontains=query) | \
             models.Q(descricao__icontains=query)
         )    
 class Evento(models.Model):

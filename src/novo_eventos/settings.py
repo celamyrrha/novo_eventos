@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'localflavor' ,
     'googlecharts',
     'stdimage',
+    'coverage',
 ]
 
 MIDDLEWARE_CLASSES = [
