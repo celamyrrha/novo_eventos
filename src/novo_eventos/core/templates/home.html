@@ -1,9 +1,30 @@
 {% extends "base.html" %}
-
+{% load static %} 
 {% block content %}
-    <div class="jumbotron">
-		<h1>Event 4 Us - Gerenciamento de Eventos</h1>
+    <div style="background:#8FCEA9 !important" class="jumbotron">
+    	<center><img src="{% static 'img/event4us-logo.png' %}" class="img-responsive" alt=""/></center>
+		<h2><center>Gerenciamento de Eventos</center></h2>
 	</div>
+	 <div class="row  pad-row text-center" >
+	 {% for evento in eventos %}
+
+                <div class="col-md-3 col-sm-3 col-xs-6">
+                     {% if evento.imagem_evento %} 
+                     <a href="{{ evento.get_absolute_url }}">
+                    <img src="{{ evento.imagem_evento.thumbnail.url}}" class="img-responsive img-circle pad-img" alt=""/>
+                    </a>
+                    {% else %}
+                    <a href="{{ evento.get_absolute_url }}">
+                    <img src="{% static 'img/logo.png' %}" class="img-responsive img-circle pad-img" alt=""/>
+                    </a>
+                    {% endif %}
+                    <a href="{{ evento.get_absolute_url }}">
+                    <h4>{{ evento.nome_evento }}</h4>
+                    </a>
+                    <p><br></p>
+                    </div>      
+                    {% endfor %}        
+        </div>
 {% endblock %}
 	
 

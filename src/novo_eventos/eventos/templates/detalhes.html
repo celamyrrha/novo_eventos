@@ -1,4 +1,6 @@
-{% extends 'base.html' %} {% load static %} {% block content %}
+{% extends 'base.html' %} 
+{% load static %} 
+{% block content %}
 <div class="container">
 	<div class="jumbotron">
 		{% if user.is_staff %}
@@ -101,13 +103,5 @@
         </div>
     </div>
 
-
-<style>
-    .header {
-        color: #36A0FF;
-        font-size: 24px;
-        padding: 10px;
-    }
-</style>
 
 	{% endblock content %}
