@@ -10,11 +10,12 @@ from django.template import Context
 from cgi import escape
 
 
-from .forms import ContatoEvento, EventoForm, ContatoParticipantes, AvisoForm,PalestraForm, MaterialFormSet
+from .forms import ContatoEvento, EventoForm, ContatoParticipantes, AvisoForm,PalestraForm, MaterialFormSet, RegistroPresenca
 from .models import Evento, Inscricao, Palestra, Material, Aviso
 from novo_eventos.accounts.models import User
 from .decorators import inscricao_required
 from django.db.models.aggregates import Count
+from novo_eventos.eventos.models import Inscricao
 
 # Create your views here.
 
@@ -28,6 +29,30 @@ def lista_eventos(request):
     return render(request, template_name, context)
 
 @login_required
+def registro_presenca(request, slug, user):
+    if not request.user.is_staff:
+        messages.error(request, 'Acesso restrito aos organizadores')
+        return redirect('eventos:index')
+    evento = get_object_or_404(Evento, slug=slug)
+    inscricao = get_object_or_404(Inscricao, user=user, evento=evento)
+    if request.method == "POST":
+        form = RegistroPresenca(request.POST, instance=inscricao)
+        if form.is_valid():
+            form = form.save(commit=False)
+            form.inscricao = inscricao
+            form.save()
+        return redirect('eventos:lista_controle_presenca', slug=slug)
+    else:
+        form = RegistroPresenca(instance=inscricao)
+    template_name = 'controle_presenca.html'
+    context = {
+        'evento': evento,
+        'inscricao': inscricao,
+        'form': form       
+        }
+    return render(request, template_name, context)
+
+@login_required
 def lista_presenca(request, slug):
     if not request.user.is_staff:
         messages.error(request, 'Acesso restrito aos organizadores')
@@ -35,6 +60,20 @@ def lista_presenca(request, slug):
     evento = get_object_or_404(Evento, slug=slug)
     inscricoes =  Inscricao.objects.filter(evento=evento)
     template_name = 'lista_presenca.html'
+    context = {
+        'evento': evento,
+        'inscricoes': inscricoes       
+        }
+    return render(request, template_name, context)
+
+@login_required
+def lista_controle_presenca(request, slug):
+    if not request.user.is_staff:
+        messages.error(request, 'Acesso restrito aos organizadores')
+        return redirect('eventos:index')
+    evento = get_object_or_404(Evento, slug=slug)
+    inscricoes =  Inscricao.objects.filter(evento=evento)
+    template_name = 'lista_controle_presenca.html'
     context = {
         'evento': evento,
         'inscricoes': inscricoes       
@@ -421,6 +460,9 @@ def cracha(request, slug):
 def certificado(request, slug):
     evento = request.evento
     inscricao = get_object_or_404(Inscricao, user=request.user, evento=evento)
+    if not inscricao.is_approved():
+        messages.error(request, 'Desculpe, seu certificado não está disponível. Você não compareceu ao evento.')
+        return redirect('eventos:avisos', slug=evento.slug)
     template = 'certificado.html'
     context = {'evento':evento,'inscricao': inscricao}
     return render(request, template, context)          

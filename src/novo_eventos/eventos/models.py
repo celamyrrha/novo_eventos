@@ -108,9 +108,9 @@ class Material(models.Model):
         
 class Inscricao(models.Model):
     STATUS_CHOICES = (
-        (0,'Pendente'),
-        (1,'Aprovado'),
-        (2,'Concluído')
+        (0,'Ausente'),
+        (1,'Presente'),
+    #    (2,'Concluído')
     )
     user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name = 'Usuário', related_name='inscricoes')
     evento = models.ForeignKey(Evento, verbose_name = 'Evento', related_name='inscricoes')
@@ -118,9 +118,9 @@ class Inscricao(models.Model):
     criado = models.DateTimeField('Criado em', auto_now_add=True)
     atualizado = models.DateTimeField('Atualizado em', auto_now=True)
     
-    def active(self):
-        self.status = 1
-        self.save()
+   # def active(self):
+    #    self.status = 1
+     #   self.save()
     
     def is_approved(self):
         return self.status == 1
