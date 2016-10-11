@@ -15,10 +15,23 @@
 				<li><a href="{% url 'eventos:exclui_evento' evento.slug %}">Excluir
 						Evento</a></li>
 			</ul>
+			<div class="btn-group" role="group">
+					<button type="button" class="btn btn-default dropdown-toggle"
+						data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						Contr. de Presença <span class="caret"></span>
+					</button>
+					<ul class="dropdown-menu">
+					<li><a href="{% url 'eventos:lista_controle_presenca' evento.slug %}" role="button">
+					Registro de Presença</a></li>
+						<li><a href="{% url 'eventos:lista_presenca' evento.slug %}" role="button">
+					Lista de Presença</a></li>
+						
+					</ul>
+				</div>
 			<div class="btn-group" role="group" aria-label="...">
 				<a class="btn btn-default"
 					href="{% url 'eventos:email_participantes' evento.slug %}"
-					role="button">Enviar email para participantes</a> <a
+					role="button">Email para participantes</a> <a
 					class="btn btn-default"
 					href="{% url 'eventos:lista_presenca' evento.slug %}" role="button">
 					Lista de Presença</a> <a class="btn btn-default"

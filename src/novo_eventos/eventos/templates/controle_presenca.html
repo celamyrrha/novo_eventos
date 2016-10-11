@@ -1,0 +1,39 @@
+<!--   -*- coding: utf-8 -*- -->
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block content %}
+<form action="" method="post">
+	{% csrf_token %}
+    <div class="row">
+    <p><h2>Controle de Presença</h2></p>
+
+    <h4>Evento: {{ evento }}</h4> 
+     <p>Duração: {{ evento.data_inicio }} a {{ evento.data_fim }}</p><br/>
+<div class="table-responsive">
+  <table class="table">
+                 <tr>
+                 <td>{{ inscricao.user }}</td>
+                 <div class="form-group">
+				{{ form.as_table }} 
+				<label class="col-md-2 col-md-offset-2 text-right">
+					{{ field.label_tag }}</label>
+				<div class="col-md-6">{{ field.inscricao.status }}</div>
+				{% if field.errors %} {% for error in field.errors%}
+				<div class="col-sm-8">
+					<p class="bg-danger">{{ error }}</p>
+				</div>
+				{% endfor %} {% endif %}
+</tr>
+           
+</table>
+</div>
+</div>
+<div class="col-sm-offset-2 col-sm-10">
+		<button type="submit" class="btn btn-danger">Confirmar</button>
+		<a href="{% url 'eventos:detalhes' evento.slug %} " class="btn btn-default">Voltar</a>
+</div>
+</form>
+        	
+{% endblock %}

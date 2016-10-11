@@ -1,0 +1,32 @@
+<!--   -*- coding: utf-8 -*- -->
+{% extends "base.html" %} 
+{% load static %} 
+{% block content %}
+<div class="container">
+	<div class="row">
+	<p><h2>Controle de Presença</h2></p>
+
+    <h4>Evento: {{ evento }}</h4> 
+     <p>Duração: {{ evento.data_inicio }} a {{ evento.data_fim }}</p><br/>
+		<div id="conteudo" class="col-md-9">
+			{% for inscricao in inscricoes %}
+			<div class="artigo" role="article">
+				<div class="row">
+						<div class="col-md-3">
+							<h4>{{ inscricao.user }}</h4> </div>
+							<div class="col-md-4">{{ inscricao.get_status_display }}
+						</div>
+						<div class="col-md-4"><a href="{% url 'eventos:registro_presenca' evento.slug inscricao.user_id %}">Alterar Presença</a>
+						</div>
+						
+				</div>
+			</div>
+				<hr>
+				{% empty %}
+				<h4>Nenhum inscrito no evento.</h4>
+				{% endfor %}
+		</div>
+		</div>
+	</div>
+
+{% endblock %}
